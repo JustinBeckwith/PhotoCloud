@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Home Page";
+
+    var db = Database.Open("StarterSite");
+    var container = StorageHelper.getPhotoContainer();
+    var pics = db.Query("SELECT TOP 6 * FROM pics ORDER BY DateCreated DESC");
+
+    if (IsPost && WebSecurity.IsAuthenticated) {
+        var image = WebImage.GetImageFromRequest();
+        
+
+        var id = Guid.NewGuid().ToString();
+        var blob = container.GetBlobReference(id);
+        blob.UploadByteArray(image.GetBytes());
+
+        
+        db.Execute("INSERT INTO pics (BlobId, UserId) VALUES (@0, @1)", id, WebSecurity.CurrentUserId);
+
+        Response.Write(blob.Uri);
+        Response.End();
+    }
+}
+
+<style type="text/css">
+    #pics img {
+        float: left;
+        width: 300px;
+        height: 300px;
+    }
+</style>
+
+<div id="pics">
+    @foreach (var pic in pics) {
+        <img src="@container.GetBlobReference(pic["BlobId"]).Uri.ToString()" alt="Nope" />
+    }
+</div>
+
+<script src="~/Scripts/jquery.signalR-0.5.0.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/PhotoCloud.js"></script>
