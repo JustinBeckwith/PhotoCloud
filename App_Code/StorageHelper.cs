@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using System.Configuration;
 
 /// <summary>
 /// a simple class to get our photo container
@@ -10,11 +11,8 @@ using Microsoft.WindowsAzure.StorageClient;
 public class StorageHelper
 {
     public static CloudBlobContainer getPhotoContainer() {
-        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey("YOUR PREVIEW STORAGE NAME HERE", "YOUR STORAGE KEY RIGHT HERE");    
-        CloudStorageAccount storageAccount = new CloudStorageAccount(cred, 
-            new Uri("http://YOUR PREVIEW STORAGE NAME.blob.core.azure-preview.com/"), 
-            new Uri("http://YOUR PREVIEW STORAGE NAME.table.core.azure-preview.com/"), 
-            new Uri("http://YOUR PREVIEW STORAGE NAME.queue.core.azure-preview.com/"));
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ConfigurationManager.AppSettings["storageName"], ConfigurationManager.AppSettings["storageKey"]);    
+        CloudStorageAccount storageAccount = new CloudStorageAccount(cred, false);            
         CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
         CloudBlobContainer container = blobClient.GetContainerReference("myphotos");
         container.CreateIfNotExist();
