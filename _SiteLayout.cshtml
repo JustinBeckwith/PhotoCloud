@@ -6,8 +6,7 @@
         <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
         <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <script src="~/Scripts/jquery-1.6.2.min.js"></script>
-        <script src="~/Scripts/jquery-ui-1.8.11.js"></script>
+        <script src="~/Scripts/jquery-1.9.0.min.js"></script>        
         <script src="~/Scripts/modernizr-2.0.6-development-only.js"></script>
         <meta name="viewport" content="width=device-width" />
     </head>
@@ -18,18 +17,7 @@
                     <p class="site-title"><a href="~/">your logo here.</a></p>
                 </div>
                 <div class="float-right">
-                    <section id="login">
-                        @if (WebSecurity.IsAuthenticated) {
-                            <p>
-                                Hello, <a class="username" href="~/Account/ChangePassword" title="Change password">@WebSecurity.CurrentUserName</a>!
-                                <a href="~/Account/Logout">Logout</a>
-                            </p>
-                        } else {
-                            <ul>
-                                <li><a href="~/Account/Register">Register</a></li>
-                                <li><a href="~/Account/Login">Log in</a></li>
-                            </ul>
-                        }
+                    <section id="login">                        
                     </section>
                 </div>
             </div>

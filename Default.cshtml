@@ -6,17 +6,12 @@
     var container = StorageHelper.getPhotoContainer();
     var pics = db.Query("SELECT TOP 6 * FROM pics ORDER BY DateCreated DESC");
 
-    if (IsPost && WebSecurity.IsAuthenticated) {
+    if (IsPost) {
         var image = WebImage.GetImageFromRequest();
-        
-
         var id = Guid.NewGuid().ToString();
         var blob = container.GetBlobReference(id);
         blob.UploadByteArray(image.GetBytes());
-
-        
-        db.Execute("INSERT INTO pics (BlobId, UserId) VALUES (@0, @1)", id, WebSecurity.CurrentUserId);
-
+        db.Execute("INSERT INTO pics (BlobId, UserId) VALUES (@0, @1)", id, 2);
         Response.Write(blob.Uri);
         Response.End();
     }

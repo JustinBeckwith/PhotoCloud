@@ -9,16 +9,28 @@ using Microsoft.WindowsAzure.StorageClient;
 /// </summary>
 public class StorageHelper
 {
-    public static CloudBlobContainer getPhotoContainer() {
-        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey("YOUR PREVIEW STORAGE NAME HERE", "YOUR STORAGE KEY RIGHT HERE");    
+    protected static CloudStorageAccount getStorageAccount() {       
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey("photocloud", "HwLFWaK3sc6wWndHLTdUp+eLwfv3/zheJJGIyXJUGzlc3OifKhS//bVnwvn7C8PWiut257G31dEXEEutwxaC5g==");    
         CloudStorageAccount storageAccount = new CloudStorageAccount(cred, 
-            new Uri("http://YOUR PREVIEW STORAGE NAME.blob.core.azure-preview.com/"), 
-            new Uri("http://YOUR PREVIEW STORAGE NAME.table.core.azure-preview.com/"), 
-            new Uri("http://YOUR PREVIEW STORAGE NAME.queue.core.azure-preview.com/"));
+            new Uri("http://photocloud.blob.core.windows-int.net/"), 
+            new Uri("http://photocloud.queue.core.windows-int.net/"), 
+            new Uri("http://photocloud.table.core.windows-int.net/"));
+        return storageAccount;
+    }
+
+    public static CloudBlobContainer getPhotoContainer() {        
+        CloudStorageAccount storageAccount = getStorageAccount();
         CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
         CloudBlobContainer container = blobClient.GetContainerReference("myphotos");
         container.CreateIfNotExist();
         container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
         return container;
     }
+
+    //public static CloudTableClient getTableClient() {
+    //    var storageAccount = getStorageAccount();
+    //    var tableClient = storageAccount.CreateCloudTableClient();
+    //    tableClient.CreateTableIfNotExist("photocloud");
+    //}
+
 }
